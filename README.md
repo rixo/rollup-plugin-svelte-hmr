@@ -57,11 +57,11 @@ An go edit files!
 
 ## Known limitations
 
-Indexed each blocks are not supported by HMR. If the items are reordered, then a HRM update of the involved components will mess the order of everything.
+Keyed each blocks are not supported by HMR. If the items are reordered, then a HRM update of the involved components will mess the order of everything.
 
 ~~~
 <!-- NOT SUPPORTED -->
-{#each items item, index}
+{#each items item (item.id)}
   ...
 {/each}
 
