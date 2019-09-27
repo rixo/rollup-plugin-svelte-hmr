@@ -45,6 +45,8 @@ module.exports = {
 
 When the `hot` option is set to `false`, the plugin will do nothing. This is useful for production builds. That's the only option for now.
 
+You'll probably also need further adaptations to make your project compatible with Nollup. See the example in this repository for reference. See [this commit](https://github.com/rixo/rollup-plugin-svelte-hmr/commit/8f996342a1553ca787698c99a4737bc118f8ddf6) in particular, that makes all the changes needed to add HMR to the official Svelte template.
+
 Then run it:
 
 ~~~
