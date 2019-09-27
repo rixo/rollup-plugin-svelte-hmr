@@ -11,6 +11,9 @@
     "README.md",
     "LICENSE"
   ],
+  "scripts": {
+    "test": "echo TODO"
+  },
   "dependencies": {
     "rollup-pluginutils": "^2.8.2"
   }
