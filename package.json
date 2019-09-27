@@ -1,0 +1,17 @@
+{
+  "name": "rollup-plugin-svelte-hmr",
+  "version": "0.0.0",
+  "description": "Add hot replacement of Svelte v3 components with Nollup",
+  "main": "lib/index.js",
+  "author": "rixo <rixo@rixo.fr>",
+  "license": "MIT",
+  "files": [
+    "index.js",
+    "runtime",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "rollup-pluginutils": "^2.8.2"
+  }
+}
