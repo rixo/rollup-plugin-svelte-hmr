@@ -2,6 +2,7 @@
   "name": "rollup-plugin-svelte-hmr",
   "version": "0.0.1",
   "description": "Add hot replacement of Svelte v3 components with Nollup",
+  "keywords": "svelte rollup nollup hmr hot",
   "main": "lib/index.js",
   "author": "rixo <rixo@rixo.fr>",
   "license": "MIT",
