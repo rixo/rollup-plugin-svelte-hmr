@@ -4,18 +4,26 @@ Svelte HMR with [Nollup](https://github.com/PepsRyuu/nollup).
 
 ## Status
 
-This is an experimental implementation of Svelte HMR. I hope this will be useful when official HMR is added to Svelte, but no such plans have been made yet.
+This is an experimental implementation of Svelte HMR.
 
-This implementation works by abusing Svelte's private API, so stability across versions is all but guaranteed -- although I'm committed to keep it working for the times being.
+It relies on knowledge of Svelte internals and some private API, so stability across versions is not guaranteed. For the times being though, I'm committed to keep it working with the last versions of Svelte. In the future, dev hooks implemented in Svelte itself could alleviate this.
 
-Also it suffers some limitations that I don't know how to bypass until HMR hooks are implemented in Svelte itself. Most notably, indexed each blocks `{#each item as item, index}` will be messed by HMR updates.
+The plugin will probably stay in version 0.x for some time still but, you can always pin the patch version if you want your install to keep working as it is (if you want to stay on a given version of Svelte for some times, for example).
 
-There are probably other flaws. Please report the bugs you encounter so that I can try to fix them for now but, more importantly, document them and build test cases for when official implementation comes.
+Please report the bugs you encounter to help stabilize Svelte HMR.
+
+Also, I'm particularly interested to know how does the Nollup + HMR combo work with different Rollup configs & plugins.
 
 ## Installation
 
 ~~~
 npm install --save-dev nollup rollup-plugin-svelte-hmr
+~~~
+
+If you want to keep your `rollup.config.js` in ESM (using `import ... from ...`), you'll also need something like [esm](https://www.npmjs.com/package/esm) to make it work with Nollup.
+
+~~~
+npm install --save-dev esm
 ~~~
 
 ## Usage
@@ -57,16 +65,6 @@ An go edit files!
 
 ## Known limitations
 
-Keyed each blocks are not supported by HMR. If the items are reordered, then a HRM update of the involved components will mess the order of everything.
+Local state (i.e. local `let` vars that are not exported) is not preserved. It should be possible soon, with a minor modification to Svelte's dev API.
 
-~~~
-<!-- NOT SUPPORTED -->
-{#each items item (item.id)}
-  ...
-{/each}
-
-<!-- should work -->
-{#each items item}
-  ...
-{/each}
-~~~
+Please, report any other bug you find.
