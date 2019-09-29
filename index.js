@@ -1,5 +1,6 @@
 const path = require('path')
 const { createFilter } = require('rollup-pluginutils')
+const { createMakeHot } = require('svelte-hmr')
 
 const hotApi = path.resolve(`${__dirname}/runtime/hot-api.js`)
 
@@ -15,6 +16,8 @@ const aliases = {
   [hotApiAlias]: hotApi,
 }
 
+const makeHot = createMakeHot(hotApi)
+
 const svelteHmr = ({ hot = true, hotOptions = {} } = {}) => {
   const filter = createFilter('**/*.svelte', [])
 
@@ -28,22 +31,7 @@ const svelteHmr = ({ hot = true, hotOptions = {} } = {}) => {
 
     this.addWatchFile(hotApi)
 
-    const replacement = `
-      import * as ${globalName} from '${hotApiAlias}'
-      if (module.hot) {
-        const { applyHMR } = ${globalName}
-        $2 = applyHMR(
-          ${options},
-          ${quote(id)},
-          module,
-          $2,
-          undefined,
-          ${compileData}
-        );
-      }
-      export default $2;
-    `
-    const transformed = code.replace(/(export default ([^;]*));/, replacement)
+    const transformed = makeHot(id, code, hotOptions)
 
     return transformed
   }
@@ -55,10 +43,6 @@ const svelteHmr = ({ hot = true, hotOptions = {} } = {}) => {
 
   function load(id) {
     if (!fs) return
-    // const buffer = fs.readFileSync(id, 'utf8');
-    // const code = buffer.toString('utf8')
-    // console.log(id, code)
-    // return code
     return new Promise((resolve, reject) => {
       fs.readFile(id, 'utf8', (err, contents) => {
         if (err) reject(err)

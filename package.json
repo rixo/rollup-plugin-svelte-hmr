@@ -16,6 +16,7 @@
     "test": "echo TODO"
   },
   "dependencies": {
-    "rollup-pluginutils": "^2.8.2"
+    "rollup-pluginutils": "^2.8.2",
+    "svelte-hmr": "^0.0.1"
   }
 }
