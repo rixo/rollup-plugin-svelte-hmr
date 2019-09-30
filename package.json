@@ -17,6 +17,6 @@
   },
   "dependencies": {
     "rollup-pluginutils": "^2.8.2",
-    "svelte-hmr": "^0.0.1"
+    "svelte-hmr": "^0.0.3"
   }
 }
