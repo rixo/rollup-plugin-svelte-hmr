@@ -12,6 +12,6 @@ rollup-pluginutils@^2.8.2:
   dependencies:
     estree-walker "^0.6.1"
 
-svelte-hmr@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.0.3.tgz#ebc56143224600628597d1f0d78364be84b8a5b5"
+svelte-hmr@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.0.5.tgz#a0563e2947b7be838ea8ccf953f2717cc41fad19"
