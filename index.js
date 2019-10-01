@@ -41,6 +41,23 @@ const svelteHmr = ({ hot = true, hotOptions = {} } = {}) => {
     fs = _fs
   }
 
+  const resolveId = (target, from) => {
+    const alias = aliases[target]
+    if (alias) {
+      return alias
+    }
+    if (fs) {
+      const name = path.join(path.dirname(from), target)
+      const extensions = ['.js', '.svelte']
+      for (const ext of extensions) {
+        const filename = name + ext
+        if (fs.existsSync(filename) && fs.lstatSync(filename).isFile()) {
+          return filename
+        }
+      }
+    }
+  }
+
   function load(id) {
     if (!fs) return
     return new Promise((resolve, reject) => {
@@ -50,6 +67,24 @@ const svelteHmr = ({ hot = true, hotOptions = {} } = {}) => {
       })
     })
   }
+
+  // We need to pass _after_ Nollup's HMR plugin, that registers itself last.
+  const nollupBundleInit = () => `
+    const init = () => {
+      if (typeof window === 'undefined') return
+      if (!window.__hot) return
+      if (!window.__hot.addErrorHandler) return
+      window.__hot.addErrorHandler(
+        err => {
+          const adapter = window.__SVELTE_HMR_ADAPTER
+          if (adapter && adapter.renderCompileError) {
+            adapter.renderCompileError(err)
+          }
+        }
+      )
+    }
+    setTimeout(init)
+  `
 
   const listeners = {
     generateBundle: [],
@@ -75,29 +110,14 @@ const svelteHmr = ({ hot = true, hotOptions = {} } = {}) => {
 
   return {
     name: 'svelte-hmr',
-    resolveId(target, from) {
-      const alias = aliases[target]
-      if (alias) {
-        return alias
-      }
-      if (fs) {
-        const name = path.join(path.dirname(from), target)
-        const extensions = ['.js', '.svelte']
-        for (const ext of extensions) {
-          const filename = name + ext
-          if (fs.existsSync(filename) && fs.lstatSync(filename).isFile()) {
-            return filename
-          }
-        }
-      }
-    },
-    transform,
-
+    nollupBundleInit,
+    resolveId,
     load,
-    _setFs,
-
     generateBundle,
     renderError,
+    transform,
+    // used by test driver
+    _setFs,
     _onBundleGenerated,
     _onRenderError,
   }
