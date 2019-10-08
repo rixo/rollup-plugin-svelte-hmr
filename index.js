@@ -25,13 +25,13 @@ const svelteHmr = ({ hot = true, hotOptions = {} } = {}) => {
 
   const compileData = 'undefined' // TODO
 
-  function transform(code, id) {
+  function _transform(code, id, compiled) {
     if (!hot) return
     if (!filter(id)) return
 
     this.addWatchFile(hotApi)
 
-    const transformed = makeHot(id, code, hotOptions)
+    const transformed = makeHot(id, code, hotOptions, compiled)
 
     return transformed
   }
@@ -99,8 +99,6 @@ const svelteHmr = ({ hot = true, hotOptions = {} } = {}) => {
     listeners[type].forEach(listener => listener(...args))
   }
 
-  // function generateBundle(options, bundle, isWrite) {}
-  // function renderError(error) {}
   const generateBundle = fire('generateBundle')
   const renderError = fire('renderError')
 
@@ -115,7 +113,11 @@ const svelteHmr = ({ hot = true, hotOptions = {} } = {}) => {
     load,
     generateBundle,
     renderError,
-    transform,
+    transform(code, id) {
+      return _transform.call(this, code, id)
+    },
+    // used by rollup-plugin-svelte
+    _transform,
     // used by test driver
     _setFs,
     _onBundleGenerated,
