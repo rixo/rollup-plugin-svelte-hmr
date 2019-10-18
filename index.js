@@ -2,8 +2,6 @@ const path = require('path')
 const { createFilter } = require('rollup-pluginutils')
 const { createMakeHot } = require('svelte-hmr')
 
-const hotApi = path.resolve(`${__dirname}/runtime/hot-api.js`)
-
 const posixify = file => file.replace(/[/\\]/g, '/')
 
 const quote = JSON.stringify
@@ -12,18 +10,17 @@ const globalName = '__ROLLUP_PLUGIN_SVELTE_HMR'
 
 const hotApiAlias = 'rollup-plugin-svelte-hmr/_/hot-api'
 
-const aliases = {
-  [hotApiAlias]: hotApi,
-}
+const svelteHmr = (options = {}) => {
+  const { hot = true, nollup = false } = options
 
-const makeHot = createMakeHot(hotApi)
-
-const svelteHmr = ({ hot = true, hotOptions = {} } = {}) => {
   const filter = createFilter('**/*.svelte', [])
 
-  const options = JSON.stringify(hotOptions)
-
-  const compileData = 'undefined' // TODO
+  const hotApiPath = `${__dirname}/hot-api/${nollup ? 'nollup' : 'rollup'}.js`
+  const hotApi = path.resolve(hotApiPath)
+  const makeHot = createMakeHot(hotApi)
+  const aliases = {
+    [hotApiAlias]: hotApi,
+  }
 
   function _transform(code, id, compiled) {
     if (!hot) return
@@ -31,7 +28,7 @@ const svelteHmr = ({ hot = true, hotOptions = {} } = {}) => {
 
     this.addWatchFile(hotApi)
 
-    const transformed = makeHot(id, code, hotOptions, compiled)
+    const transformed = makeHot(id, code, options, compiled)
 
     return transformed
   }

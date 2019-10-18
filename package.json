@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "rollup-pluginutils": "^2.8.2",
-    "svelte-hmr": "^0.0.6"
+    "svelte-hmr": "^0.0.7"
   },
   "devDependencies": {
     "nollup": "rixo/nollup#compile-error-reporting"
