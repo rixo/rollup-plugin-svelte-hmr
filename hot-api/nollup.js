@@ -1,4 +1,4 @@
-import { doApplyHmr } from 'svelte-hmr/runtime'
+import { makeApplyHmr } from 'svelte-hmr/runtime'
 
 const declinedModules = (window.__ROLLUP_PLUGIN_SVELTE_HMR_DECLINED_MODULES =
   window.__ROLLUP_PLUGIN_SVELTE_HMR_DECLINED_MODULES || {})
@@ -21,5 +21,5 @@ export const applyHmr = makeApplyHmr(args => {
     m.hot.accept(() => require(m.id))
   }
 
-  return doApplyHmr({ ...args, accept, decline })
+  return { ...args, accept, decline }
 })
