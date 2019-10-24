@@ -17,7 +17,9 @@ const svelteHmr = (options = {}) => {
 
   const hotApiPath = `${__dirname}/hot-api/${nollup ? 'nollup' : 'rollup'}.js`
   const hotApi = path.resolve(hotApiPath)
-  const makeHot = createMakeHot(hotApi)
+  const makeHot = createMakeHot(hotApi, {
+    meta: nollup ? 'module' : 'import.meta',
+  })
   const aliases = {
     [hotApiAlias]: hotApi,
   }
