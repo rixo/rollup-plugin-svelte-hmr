@@ -11,7 +11,7 @@ const globalName = '__ROLLUP_PLUGIN_SVELTE_HMR'
 const hotApiAlias = 'rollup-plugin-svelte-hmr/_/hot-api'
 
 const svelteHmr = (options = {}) => {
-  const { hot = true, nollup = false } = options
+  const { hot = true, nollup = false, patchSapperDevClient = false } = options
 
   const filter = createFilter('**/*.svelte', [])
 
@@ -42,6 +42,11 @@ const svelteHmr = (options = {}) => {
     const alias = aliases[target]
     if (alias) {
       return alias
+    }
+    if (patchSapperDevClient) {
+      if (/\/sapper-dev-client.js$/.test(target)) {
+        return path.join(__dirname, 'sapper-dev-client.js')
+      }
     }
     if (fs) {
       const name = path.join(path.dirname(from), target)
