@@ -19,6 +19,7 @@
   "files": [
     "index.js",
     "hot-api",
+    "sapper-dev-client.js",
     "README.md",
     "LICENSE"
   ],
