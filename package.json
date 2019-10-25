@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-svelte-hmr",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Add hot replacement of Svelte v3 components with Nollup",
   "keywords": [
     "svelte",
