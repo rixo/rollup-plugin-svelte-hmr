@@ -1294,9 +1294,9 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-svelte-hmr@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.0.8.tgz#99127dd98f78ab875a6fd5d3144950882bd961dd"
+svelte-hmr@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.0.9.tgz#b39f05e57662e9f60cd4d661380183f7689f6270"
 
 tar@^4:
   version "4.4.13"

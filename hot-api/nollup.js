@@ -1,25 +1,51 @@
 import { makeApplyHmr } from 'svelte-hmr/runtime'
 
-const declinedModules = (window.__ROLLUP_PLUGIN_SVELTE_HMR_DECLINED_MODULES =
-  window.__ROLLUP_PLUGIN_SVELTE_HMR_DECLINED_MODULES || {})
+const declinedModules = (window.__ROLLUP_PLUGIN_SVELTE_HMR =
+  window.__ROLLUP_PLUGIN_SVELTE_HMR || {})
 
 export const applyHmr = makeApplyHmr(args => {
   const { m, id, hotOptions, reload } = args
 
-  if (declinedModules[id]) {
-    declinedModules[id] = false
+  const globState = window.__ROLLUP_PLUGIN_SVELTE_HMR
+
+  const hotState = (globState[id] = globState[id] || { declined: false })
+
+  if (hotState.declined) {
     if (!hotOptions.noReload) {
       reload()
     }
   }
 
+  const dispose = handler => {
+    m.hot.dispose(() => {
+      if (!hotState.data) {
+        hotState.data = {}
+      }
+      handler(hotState.data)
+    })
+  }
+
+  // TODO not used anymore... remove?
   const decline = () => {
-    declinedModules[id] = true
+    hotState.declined = true
   }
 
-  const accept = () => {
-    m.hot.accept(() => require(m.id))
+  const accept = handler => {
+    m.hot.accept(() => {
+      require(m.id)
+      if (handler) {
+        handler()
+      }
+    })
   }
 
-  return { ...args, accept, decline }
+  const getHotData = () => hotState && hotState.data
+
+  const hot = {
+    data: hotState.data,
+    dispose,
+    accept,
+  }
+
+  return { ...args, hot }
 })
